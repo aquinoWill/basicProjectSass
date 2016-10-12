@@ -11,38 +11,12 @@ var gulp = require('gulp'),
 
 gulp.task('watch', ['clean'], function(done){
   runSequence(
-    ['sass', 'html', 'fontIcon', 'copyFonts', 'copyIonicIcons', 'scripts'],
+    ['sass', 'fontIcon'],
     function(){
       gulpWatch('assets/**/*.scss', function(){ gulp.start('sass'); });
-      gulpWatch('assets/**/*.html', function(){ gulp.start('html'); });
       buildBrowserify({ watch: true }).on('end', done);
     }
   );
-});
-
-
-gulp.task('build', ['clean'], function(done){
-  runSequence(
-    ['sass', 'html', 'fontIcon', 'copyFonts', 'copyIonicIcons', 'scripts'],
-    function(){
-      buildBrowserify({
-        minify: isRelease,
-        browserifyOptions: {
-          debug: !isRelease
-        },
-        uglifyOptions: {
-          mangle: false
-        }
-      }).on('end', done);
-    }
-  );
-});
-
-
-gulp.task('copyFonts', function(){
-  gulp.src(['assets/**/*.+(woff2|eot|tff|)'])
-  .pipe(flatten())
-  .pipe(gulp.dest('www/build/fonts'))
 });
 
 
